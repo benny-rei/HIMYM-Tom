@@ -23,7 +23,7 @@ public class DBManager {
 		return instance;
 	}
 
-	public ArrayList<Episoden> searchTeile(int numb) throws SQLException {
+	public ArrayList<Episoden> getStaffel(int numb) throws SQLException {
 
 		ArrayList<Episoden> episoden = new ArrayList<Episoden>();
 		PreparedStatement stmt = null;

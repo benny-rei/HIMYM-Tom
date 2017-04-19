@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
@@ -36,15 +37,23 @@ public class AjaxServlet extends HttpServlet {
 		BufferedReader reader = request.getReader();
 		int number = reader.read();
 		
-		DBManager db = new DBManager();
-		ArrayList<Episoden> episoden = db.getStaffel(number);
+		DBManager db;
+		try {
+			db = new DBManager();
+			
+			ArrayList<Episoden> episoden = db.getStaffel(number);
+			
+			
+			Gson gson = new Gson();
+			String gsonString = gson.toJson(episoden);
+			
+			PrintWriter writer = response.getWriter();
+			writer.write(gsonString);
 		
-		Gson gson = new Gson();
-		String gsonString = gson.toJson(episoden);
-		
-		PrintWriter writer = response.getWriter();
-		writer.write(gsonString);
-		
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
