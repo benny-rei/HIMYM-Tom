@@ -485,23 +485,23 @@
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
-									<input type="text" class="form-control"
-										placeholder="Your Name *" id="name" required
-										data-validation-required-message="Please enter your name.">
+									<input type="number" class="form-control"
+										placeholder="Season ID [1-9]" id="season" min="1" max="9" step="1" value="1" required
+										data-validation-required-message="Please enter a season number! [1-9]">
 									<p class="help-block text-danger"></p>
 								</div>
 								
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<div id="episodes" class="form-control" placeholder="Your Message *"></div>
+									<div id="episodes" class="form-control" placeholder="Episodes"></div>
 									<p class="help-block text-danger"></p>
 								</div>
 							</div>
 							<div class="clearfix"></div>
 							<div class="col-lg-12 text-center">
 								<div id="find"></div>
-								<button type="submit" class="btn btn-xl">Send Message</button>
+								<button type="submit" class="btn btn-xl" onlcick="findEpisodes()">Find</button>
 							</div>
 						</div>
 					</form>
@@ -509,6 +509,36 @@
 			</div>
 		</div>
 	</section>
+	
+	<script type="text/javascript">
+	function findEpisodes()
+	{
+		var xmlhttp = new window.XMLHttpRequest();
+		
+		xmlhttp.onreadystatechange = function()
+		{
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+			{
+				var obj = JSON.parse(this.responseText);
+				var string = "<b> EpisodenNummer, EpisodenTitel, Beschriebung </b>";
+				for (var i = 0; i < obj.length;i++)
+				{
+					str += obj[i].episodenNR + " <b>" + obj[i].name + "</b> " + obj[i].description +"<br/>";
+				}
+					
+				
+				/* ";*/
+				document.getElementById("episodes").innerHTML = str;  
+			}
+		}
+		
+		xmlhttp.open("GET", "AJAXServlet", true);
+		xmlhttp.send(document.getElementById("season").innerHTML);
+		
+	}
+	</script>
+	
+	
 
 	<footer>
 		<div class="container">

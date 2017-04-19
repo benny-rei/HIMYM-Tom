@@ -1,6 +1,11 @@
 
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
 import com.google.gson.Gson;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,9 +33,17 @@ public class AjaxServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		BufferedReader reader = request.getReader();
+		int number = reader.read();
 		
 		DBManager db = new DBManager();
-		db.getStaffel(id);
+		ArrayList<Episoden> episoden = db.getStaffel(number);
+		
+		Gson gson = new Gson();
+		String gsonString = gson.toJson(episoden);
+		
+		PrintWriter writer = response.getWriter();
+		writer.write(gsonString);
 		
 	}
 
